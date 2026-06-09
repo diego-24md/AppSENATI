@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- ESCUDO -->
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/escudo" />
+
+        <!-- TÍTULO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACCESO SEGURO"
+            android:textColor="#E53935"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.08" />
+
+        <!-- LÍNEA DECORATIVA -->
+        <View
+            android:layout_width="60dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="6dp"
+            android:background="#E53935" />
+
+        <!-- SUBTÍTULO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="Sistema de Gestión ⚙️"
+            android:textColor="#AAAAAA"
+            android:textSize="14sp" />
+
+        <!-- TARJETA GLASSMORPHISM -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_glass_card"
+            android:padding="24dp">
+
+            <!-- Label Usuario -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Usuario"
+                android:textColor="#FFCCCC"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp" />
+
+            <!-- Input Usuario -->
+            <EditText
+                android:id="@+id/edtUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_dark"
+                android:hint="Ingresa tu usuario"
+                android:textColorHint="#666666"
+                android:textColor="#000000"
+                android:padding="14dp" />
+
+            <!-- Label Contraseña -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraseña"
+                android:textColor="#FFCCCC"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp" />
+
+            <!-- Input Contraseña -->
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/bg_input_dark"
+                android:hint="Ingresa tu contraseña"
+                android:textColorHint="#666666"
+                android:textColor="#000000"
+                android:inputType="textPassword"
+                android:padding="14dp" />
+
+            <!-- Botón Ingresar -->
+            <Button
+                android:id="@+id/btnIniciarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:backgroundTint="#E53935"
+                android:text="INGRESAR"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Footer -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="© Sistema de Gestión"
+            android:textColor="#444444"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</ScrollView>
