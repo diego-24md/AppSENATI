@@ -45,7 +45,7 @@ public class dashboard extends AppCompatActivity {
                         switch (position) {
                             case 0: tab.setText("Registro"); break;
                             case 1: tab.setText("Buscador"); break;
-                            case 2: tab.setText("Edición"); break;
+                            case 2: tab.setText("Historial"); break;
                             case 3: tab.setText("Papelera"); break;
                         }
                     }

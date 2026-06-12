@@ -4,13 +4,14 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.myapplication.adapters.HerramientaEliminarAdapter;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,12 +26,13 @@ import java.util.ArrayList;
 
 public class ConfiguracionFragment extends Fragment {
 
-    private ListView lstHerramientas;
+    private RecyclerView rvHerramientas;
     private RequestQueue requestQueue;
 
     private final String URL = "http://192.168.101.31:3000/api/herramientas/";
 
-    private ArrayList<String> listaTexto;
+    private ArrayList<String> listaNombres;
+    private ArrayList<String> listaMarcas;
     private ArrayList<Integer> listaIds;
 
     public ConfiguracionFragment() {
@@ -40,29 +42,16 @@ public class ConfiguracionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view, savedInstanceState);
 
-        lstHerramientas = view.findViewById(R.id.lstHerramientas);
+        rvHerramientas = view.findViewById(R.id.rvHerramientas);
+        rvHerramientas.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        listaTexto = new ArrayList<>();
-        listaIds = new ArrayList<>();
+        listaNombres = new ArrayList<>();
+        listaMarcas  = new ArrayList<>();
+        listaIds     = new ArrayList<>();
 
         cargarHerramientas();
-
-        lstHerramientas.setOnItemClickListener((parent, view1, position, id) -> {
-
-            int idHerramienta = listaIds.get(position);
-
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Eliminar herramienta")
-                    .setMessage("¿Desea eliminar esta herramienta?")
-                    .setPositiveButton("Sí", (dialog, which) -> {
-                        eliminarHerramienta(idHerramienta);
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        });
     }
 
     private void cargarHerramientas() {
@@ -75,39 +64,36 @@ public class ConfiguracionFragment extends Fragment {
                 null,
 
                 response -> {
-
                     try {
-
-                        listaTexto.clear();
+                        listaNombres.clear();
+                        listaMarcas.clear();
                         listaIds.clear();
 
                         JSONArray data = response.getJSONArray("data");
 
                         for (int i = 0; i < data.length(); i++) {
-
-                            JSONObject herramienta = data.getJSONObject(i);
-
-                            int id = herramienta.getInt("idherramienta");
-                            String nombre = herramienta.getString("nombre");
-                            String marca = herramienta.getString("marca");
-
-                            listaIds.add(id);
-
-                            listaTexto.add(
-                                    "ID: " + id +
-                                            "\nNombre: " + nombre +
-                                            "\nMarca: " + marca
-                            );
+                            JSONObject h = data.getJSONObject(i);
+                            listaIds.add(h.getInt("idherramienta"));
+                            listaNombres.add(h.getString("nombre"));
+                            listaMarcas.add(h.getString("marca"));
                         }
 
-                        ArrayAdapter<String> adapter =
-                                new ArrayAdapter<>(
-                                        requireContext(),
-                                        android.R.layout.simple_list_item_1,
-                                        listaTexto
-                                );
+                        HerramientaEliminarAdapter adapter = new HerramientaEliminarAdapter(
+                                listaNombres,
+                                listaMarcas,
+                                position -> {
+                                    int idHerramienta = listaIds.get(position);
+                                    new AlertDialog.Builder(requireContext())
+                                            .setTitle("Eliminar herramienta")
+                                            .setMessage("¿Desea eliminar esta herramienta?")
+                                            .setPositiveButton("Sí", (dialog, which) ->
+                                                    eliminarHerramienta(idHerramienta))
+                                            .setNegativeButton("No", null)
+                                            .show();
+                                }
+                        );
 
-                        lstHerramientas.setAdapter(adapter);
+                        rvHerramientas.setAdapter(adapter);
 
                     } catch (Exception e) {
                         Log.e("ErrorJSON", e.toString());
@@ -115,19 +101,11 @@ public class ConfiguracionFragment extends Fragment {
                 },
 
                 error -> {
-
                     String mensaje = "Error desconocido";
-
-                    if (error.networkResponse != null) {
+                    if (error.networkResponse != null)
                         mensaje = "Código: " + error.networkResponse.statusCode;
-                    }
 
-                    Toast.makeText(
-                            getContext(),
-                            mensaje,
-                            Toast.LENGTH_LONG
-                    ).show();
-
+                    Toast.makeText(getContext(), mensaje, Toast.LENGTH_LONG).show();
                     Log.e("ErrorWS", error.toString());
                 }
         );
@@ -143,24 +121,16 @@ public class ConfiguracionFragment extends Fragment {
                 null,
 
                 response -> {
-
-                    Toast.makeText(
-                            getContext(),
+                    Toast.makeText(getContext(),
                             "Herramienta eliminada correctamente",
-                            Toast.LENGTH_LONG
-                    ).show();
-
+                            Toast.LENGTH_LONG).show();
                     cargarHerramientas();
                 },
 
                 error -> {
-
-                    Toast.makeText(
-                            getContext(),
+                    Toast.makeText(getContext(),
                             "Error al eliminar",
-                            Toast.LENGTH_LONG
-                    ).show();
-
+                            Toast.LENGTH_LONG).show();
                     Log.e("ErrorWS", error.toString());
                 }
         );
